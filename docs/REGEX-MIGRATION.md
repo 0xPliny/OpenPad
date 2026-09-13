@@ -13,7 +13,7 @@ Verified 2026-09-12: **31 tests passed** on both runtimes:
 | Workstation | 26.5.1 | 14.6.202.34-node.24 |
 | Verified OpenPad executable, Electron 44.3.0 | 24.20.0 | 15.2.124.19-electron.0 |
 
-The Electron run used `ELECTRON_RUN_AS_NODE=1` and the executable identified by `release/verified.json`, build `2026-09-12T21-26-49-575Z-68fbabfb`. It executed the checked-out corpus/models using that embedded runtime; it was not a packaged renderer UI test. Run locally with `node --test test/regex-compatibility.test.cjs`.
+The historical Electron run used `ELECTRON_RUN_AS_NODE=1` with a local executable that is not distributed in this source repository. It executed the checked-out corpus/models using that embedded runtime; it was not a packaged renderer UI test or validation of a public binary. Run the corpus locally with `node --test test/regex-compatibility.test.cjs`.
 
 **No Notepad++ executable comparator was run.** Fixture `boost` entries are documented expectations, not observations of installed Notepad++ behavior. Exact behavior without a justified expectation is `UNVERIFIED`; `notepadObservation` remains `NOT_RUN` with no version or results. A finite corpus does not establish general equivalence.
 
