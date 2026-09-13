@@ -15,6 +15,8 @@ const pkg=JSON.parse(await fs.readFile('package.json','utf8'));
 const sourceCommit=(await exec('git',['rev-parse','HEAD'],{cwd:root})).stdout.trim();
 const sourceStatus=(await exec('git',['status','--porcelain'],{cwd:root})).stdout.trim();
 if(sourceStatus)throw new Error('Release packaging requires a clean committed source tree. Commit the reviewed changes first.');
+// Electron downloads its runtime lazily; a fresh npm ci has no executable yet.
+createRequire(import.meta.url)('electron');
 // Check the Windows signature provider before spending time packaging artifacts.
 await signingStatus(path.join(root,'node_modules','electron','dist','electron.exe'));
 const stage=path.join(out,'staging');
