@@ -2,35 +2,33 @@
 
 **A local context workbench for Markdown maintained by people and AI agents.**
 
-Watch files change, inspect observed diffs, measure context costs, and curate the instructions your agents use. OpenPad combines a desktop text editor with tools for working on `AGENTS.md`, `CLAUDE.md`, `MEMORY.md`, `SKILL.md`, and other project notes.
-
-![OpenPad context budgeting](docs/screenshots/context-budget.png)
+Watch files change, inspect observed diffs, measure context costs, and curate project notes in a desktop text editor.
 
 **Early preview · MIT licensed · Windows verified**
 
-[Scope](SCOPE.md) · [Validation](VALIDATION.md) · [Roadmap](docs/ROADMAP.md) · [Contributing](CONTRIBUTING.md)
+## Download
 
-## What you can do
+### [⬇ Download OpenPad for Windows (.exe)](https://github.com/0xPliny/OpenPad/releases/download/v0.3.0/OpenPad-0.3.0-win32-x64-setup.exe)
+
+**Windows 10/11, 64-bit · Free · No Node.js or developer tools required**
+
+Download the installer, open it, choose an installation folder, and launch OpenPad from the Start menu. The installer does not launch the app automatically. Updates are installed manually.
+
+Prefer no installation? [Download the portable ZIP](https://github.com/0xPliny/OpenPad/releases/download/v0.3.0/OpenPad-0.3.0-win32-x64.zip), extract it, and open `OpenPad.exe`. [Release notes and SHA-256 checksums](https://github.com/0xPliny/OpenPad/releases/tag/v0.3.0) are available with every published build.
+
+This is an **unsigned preview**: Windows may display an unknown-publisher or SmartScreen warning. macOS and Linux downloads are not available yet.
+## Features
 
 | Workflow | Available today |
 | --- | --- |
-| Watch agent activity | Event-driven folder monitoring, include/exclude filters, activity feed, session history, and read-only follow/tail for clean buffers. |
-| Inspect changes | Opt-in retained before/after observations, a historical review queue, persisted acknowledgment decisions, and Markdown session reports. |
-| Measure context | Local `o200k_base` and `cl100k_base` token counts, Markdown heading subtree costs, configurable budgets, and saved-file corpus rankings. |
-| Improve context files | Advisory checks for length, empty sections, repeated prose, placeholders, and optional date reminders; seven editable starter templates. |
+| Watch activity | Event-driven folder monitoring, filters, activity feed, session history, and read-only follow/tail for clean buffers. |
+| Inspect changes | Opt-in retained before/after observations, historical review decisions, and Markdown session reports. |
+| Measure context | Local `o200k_base` and `cl100k_base` counts, Markdown heading subtree costs, configurable budgets, and saved-file corpus rankings. |
+| Improve context | Advisory checks for length, empty sections, repeated prose, placeholders, optional date reminders, and seven editable starter templates. |
 | Connect an agent | An opt-in authenticated localhost MCP server with seven editor-control and context tools. |
 | Edit comfortably | Tabs, pins, groups, workspaces, independent panes, Markdown preview, folder search, comparison, bookmarks, macros, and explicit encoding/EOL handling. |
 
-OpenPad observes filesystem changes; it cannot identify who wrote them. Historical review acknowledges changes already on disk. **Staged writes and approval before a file changes are planned.**
-
-<details>
-<summary>Editor appearance</summary>
-
-![OpenPad dark editor](docs/screenshots/editor-dark.png)
-
-![OpenPad light editor](docs/screenshots/editor-light.png)
-
-</details>
+Filesystem observations do not identify the writer. Historical review acknowledges changes already on disk; it does not reverse them or require approval before a write. Staging and write approval remain planned.
 
 ## Run from source
 
@@ -43,38 +41,48 @@ npm ci
 npm start
 ```
 
-Open a Markdown file and use the command palette (`Ctrl+Shift+P`) to find context, Watch, review, and template actions. Quick Open is `Ctrl+P`. Start Watch on a folder to establish the scope for corpus tools and optional MCP access.
+Dependencies are installed locally; `node_modules` is not distributed in this repository. The lockfile keeps installation consistent.
 
-This repository is a source preview. A signed installer, automatic updates, and package-manager distribution are not available yet. See [building and testing](docs/BUILDING.md) for local packaging.
+Use the command palette (`Ctrl+Shift+P`) for context, Watch, review, and template actions. Quick Open is `Ctrl+P`. Start Watch on a folder to establish the scope for corpus tools and optional MCP access.
 
 ## MCP integration
 
-Start Watch, then explicitly enable MCP in OpenPad. The server uses an ephemeral `127.0.0.1` port and a fresh bearer token. Stopping Watch or disabling MCP revokes access; it never enables itself on restart.
+Start Watch, then explicitly enable MCP. The server uses an ephemeral `127.0.0.1` port and a fresh bearer token. Stopping Watch, disabling MCP, reloading, or quitting revokes access. It never enables itself on restart.
 
-Available tools: `open_file`, `reveal_range`, `set_status`, `count_tokens`, `lint_agent_file`, `get_context_budget`, and `get_session_provenance`.
+Tools: `open_file`, `reveal_range`, `set_status`, `count_tokens`, `lint_agent_file`, `get_context_budget`, and `get_session_provenance`.
 
-Tools operate within the selected Watch scope and its exclusions. This version exposes no file-write or review-decision tools. It supports native HTTP clients with bearer authentication; browser origins are rejected. SDK interoperability is tested, but end-user Cursor and Claude Code configurations are not yet validated. Invocation metadata is bounded and kept in memory, without raw arguments, document contents, paths, or tokens. See [the full contract](SCOPE.md#current-limits).
+Tools use the selected Watch scope and filename exclusions, preserve existing unsaved buffers, and expose no file-write or review-decision operations. Native HTTP clients use bearer authentication; browser origins are rejected. SDK interoperability is tested, but end-user Cursor and Claude Code configurations remain unverified. Invocation metadata stays in bounded memory without raw arguments, document contents, paths, or tokens; it is not a durable audit log.
 
-## Current limits
-
-- Windows is the only runtime-verified platform. Accessibility, screen-reader, high-contrast, and full DPI audits remain open.
-- Files opened for editing are limited to 32 MiB. Larger files have bounded read-only UTF-8 utilities. Watch and context analysis have smaller, documented limits.
-- Filesystem events can coalesce or be missed. Network drives and log rotation have no guarantees; watches do not resume automatically.
-- Token counts exclude chat framing. Characters/4 is an explicitly labeled estimate, not exact Claude tokenization. Corpus totals measure saved files, not unsaved buffers or an atomic folder snapshot.
-- Recovery can lose changes since the last completed snapshot. Undo does not survive restart, and power-loss durability is not certified.
-- Save conflict checks can race external writers; multi-file replacement is not crash-atomic. OpenPad does not yet provide a locked staging/approval protocol.
-
-OpenPad retains useful text-editor ergonomics but is not pursuing Notepad++ parity, an IDE, retrieval/embeddings, or Obsidian plugin compatibility. Detailed bounds and planned work are in [SCOPE.md](SCOPE.md).
-
-## Development
+## Development and packaging
 
 ```powershell
 npm test
 npm run test:ui
 ```
 
-Tests cover models, failure injection, and isolated Electron desktop scenarios. Their limits and validation environment are recorded in [VALIDATION.md](VALIDATION.md). Contributions should preserve file bytes, unsaved edits, cancellation, and recovery behavior. Please use synthetic files in issues and pull requests; never include private notes, profiles, or credentials.
+The source preview passed **210 model tests and 34 isolated Electron desktop scripts locally on Windows**. Some native dialogs are stubbed. These results do not certify physical printing, native Recycle Bin behavior, accessibility, or power-loss durability. There is no hosted CI guarantee.
+
+For local Windows packages, install PowerShell 7 (`pwsh.exe`), commit your changes, and run `npm run package` from a clean checkout. The script creates a unique directory under `release/builds/` with an NSIS installer, portable ZIP, checksums, and build metadata. It does not upload artifacts. The current script intentionally requires unsigned output; signing needs a separately reviewed packaging change. The downloadable preview is unsigned. Automatic updates and package-manager distribution are not available yet. Bit-for-bit build reproducibility is not certified.
+
+For frozen-artifact desktop checks, set `OPENPAD_EXECUTABLE` and invoke each individual `node test/<script>.cjs` command in `package.json`. The `test:ui` command rebuilds source and should not be used as evidence for an immutable package.
+
+## Current limits
+
+- Files opened for editing are limited to 32 MiB. Larger files have bounded read-only UTF-8 utilities. This is not a global memory or save-size limit.
+- Watch defaults include 5,000 tracked files, 2 MiB per UTF-8 file, and 2,000 retained events. Events may coalesce or be missed. Network drives and log rotation have no guarantees; watches do not resume automatically.
+- File metering and corpus analysis accept at most 1 MiB per file. Corpus scans are bounded to 5,000 candidates and 64 MiB read. Counts exclude chat framing; characters/4 is an estimate, not exact Claude tokenization. Heading subtree counts overlap. Corpus totals measure saved files at different times, not an atomic snapshot or unsaved buffers.
+- Observed line markers describe only the latest matching observation, not cumulative author attribution. History and optional retained review contents are bounded and may be evicted.
+- MCP has a 64 KiB request body limit, four active requests/tools, 60 authenticated requests per minute, and a 10-second tool deadline. Filename exclusions are not secret-content detection.
+- Lint findings are advisory. Instruction precedence, semantic contradictions, and file-reference validation are not implemented.
+- Recovery can lose changes since the last completed snapshot. Undo does not survive restart. Save conflict checks can race external writers; multi-file replacement is not crash-atomic.
+- Windows is the only runtime-verified platform. Screen-reader, high-contrast, complete DPI, and power-loss audits remain open. No comparative performance claim is made.
+
+Planned work includes staged proposals with a validated conflict protocol, richer context linting, vault relationships, and platform/accessibility hardening. OpenPad is not pursuing Notepad++ parity, an IDE, retrieval/embeddings, or Obsidian plugin emulation. Search uses JavaScript regular expressions, with no Boost compatibility guarantee.
+
+## Contributing
+
+Keep changes focused and preserve file bytes, unsaved edits, undo boundaries, cancellation, and recovery. Include the problem, resulting behavior, meaningful tests, and remaining limits in pull requests. Use synthetic fixtures. This repository accepts application/test source, required build manifests, this README, and license information; local prompts, agent configuration, conversations, profiles, credentials, and generated artifacts must stay outside it. Review staged changes explicitly: ignore rules do not remove already-tracked content or sanitize Git history.
 
 ## License
 
-[MIT](LICENSE). Single-user review and MCP are part of the open-source project. Third-party dependencies retain their own licenses. The package's `private: true` setting prevents accidental npm publication; it does not restrict use or contribution under the MIT license.
+[MIT](LICENSE). Third-party dependencies retain their own licenses. The package's `private: true` setting prevents accidental npm publication; it does not restrict use or contribution under the MIT license.
