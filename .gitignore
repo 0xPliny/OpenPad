@@ -93,14 +93,17 @@ session-history*
 [Mm][Ee][Mm][Oo][Rr][Yy].[Mm][Dd]
 
 # Credentials and machine-specific settings are never public fixtures.
-.env
-.env.*
-*.env
-*.pem
-*.key
-*.p12
-*.pfx
-*id_rsa*
-*id_ed25519*
-credentials*
-secrets*
+.[Ee][Nn][Vv]
+.[Ee][Nn][Vv].*
+*.[Ee][Nn][Vv]
+*.[Pp][Ee][Mm]
+*.[Kk][Ee][Yy]
+*.[Pp]12
+*.[Pp][Ff][Xx]
+*[Ii][Dd]_[Rr][Ss][Aa]*
+*[Ii][Dd]_[Ee][Dd]25519*
+[Cc][Rr][Ee][Dd][Ee][Nn][Tt][Ii][Aa][Ll][Ss]*
+[Ss][Ee][Cc][Rr][Ee][Tt][Ss]*
+
+[Mm][Ee][Mm][Oo][Rr][Yy]*
+[Hh][Ii][Ss][Tt][Oo][Rr][Yy]*
