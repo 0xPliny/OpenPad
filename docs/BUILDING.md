@@ -19,7 +19,7 @@ Commit your changes and start from a clean Git checkout:
 npm run package
 ```
 
-The packaging script creates a unique directory under `release/builds/`, bundles the application, includes runtime dependencies and license notices, and produces an NSIS installer, portable ZIP, checksums, and build metadata. It does not publish artifacts. Local packages are unsigned unless an appropriate signing configuration is provided. Signing and distribution need separate validation.
+The packaging script creates a unique directory under `release/builds/`, bundles the application, includes runtime dependencies and license notices, and produces an NSIS installer, portable ZIP, checksums, and build metadata. It does not publish artifacts. The current packaging script intentionally produces unsigned artifacts. Signing requires a separately reviewed packaging change; signing and distribution need separate validation.
 
 For a frozen executable, set `OPENPAD_EXECUTABLE` to its absolute path and invoke each individual desktop `node test/<script>.cjs` command listed in `package.json`. Do not use `test:ui` as frozen-artifact evidence: that script rebuilds source. Retain results with the exact source commit and artifact hashes.
 
