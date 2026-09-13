@@ -1,0 +1,21 @@
+const {_electron:electron}=require('playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=require('node:path'),os=require('node:os');
+const {SessionStore}=require('../src/session.cjs');
+(async()=>{
+  const root=await fs.mkdtemp(path.join(os.tmpdir(),'openpad-pane-layout-')),profile=path.join(root,'profile');let app;
+  const launch=async(files=[])=>{app=await electron.launch({...(process.env.OPENPAD_EXECUTABLE?{executablePath:process.env.OPENPAD_EXECUTABLE,args:files}:{args:[path.resolve('.'),...files]}),env:{...process.env,OPENPAD_USER_DATA:profile}});const page=await app.firstWindow();page.setDefaultTimeout(8000);await page.waitForSelector('body[data-ready="true"]');return page;};
+  const command=name=>app.evaluate(({BrowserWindow},name)=>BrowserWindow.getAllWindows()[0].webContents.send('command',name),name);
+  try{
+    const a=path.join(root,'a.txt'),b=path.join(root,'b.txt');await fs.writeFile(a,'alpha');await fs.writeFile(b,'beta');let page=await launch([a,b]);await page.waitForFunction(()=>document.querySelector('#filepath').textContent.endsWith('b.txt'));
+    await command('paneLayout');await page.waitForSelector('#pane-count');await page.locator('#pane-count').selectOption('2');await page.locator('#pane-arrangement').selectOption('rows');await page.locator('#pane-height').fill('45');await page.getByRole('button',{name:'Apply pane layout',exact:true}).click();await page.waitForFunction(()=>document.querySelectorAll('.split-panel select').length===2);
+    const ids=await page.locator('.tab').evaluateAll(tabs=>Object.fromEntries(tabs.filter(tab=>/[ab]\.txt/.test(tab.textContent)).map(tab=>[tab.textContent.includes('a.txt')?'a':'b',tab.dataset.id])));
+    await page.locator('.split-panel select').nth(0).selectOption(ids.a);await page.locator('.split-panel select').nth(1).selectOption(ids.b);
+    await command('saveWorkspace');await page.waitForSelector('#workspace-name');await page.locator('#workspace-name').fill('Pane workspace');await page.getByRole('button',{name:'Save workspace',exact:true}).click();await page.waitForFunction(()=>!document.querySelector('#dialog').open);
+    await command('quit');await app.close();app=null;page=await launch();
+    assert.deepEqual(await page.locator('.split-panel select').evaluateAll(selects=>selects.map(select=>select.value)),[ids.a,ids.b]);assert.equal(await page.locator('.split-panel').getAttribute('data-arrangement'),'rows');assert.equal(await page.locator('.split-panel').evaluate(node=>node.style.height),'45vh');assert.equal(await page.locator('.split-panel .cm-content').nth(0).textContent(),'alpha');assert.equal(await page.locator('.split-panel .cm-content').nth(1).textContent(),'beta');
+    await command('resetLayout');await page.waitForFunction(()=>document.querySelector('.split-panel').hidden);await command('loadWorkspace');await page.waitForSelector('#picker-query');await page.locator('#picker-query').fill('Pane workspace');await page.locator('#picker-query').press('Enter');await page.waitForFunction(()=>document.querySelectorAll('.split-panel select').length===2);assert.equal(await page.locator('.split-panel').getAttribute('data-arrangement'),'rows');
+    await command('close');await page.waitForFunction(id=>![...document.querySelectorAll('.tab')].some(tab=>tab.dataset.id===id),ids.b);assert.ok((await page.locator('.split-panel select').evaluateAll(selects=>selects.map(select=>select.value))).every(id=>id!==ids.b));
+    await command('quit');await app.close();app=null;const store=new SessionStore(profile),saved=await store.load();await store.save({...saved,docs:saved.docs.map(doc=>({...doc,mainView:{selection:{ranges:[null]},scroll:{top:'wrong',left:-1}}})),settings:{...saved.settings,paneLayout:{documents:null,arrangement:42,height:-1}}});page=await launch();assert.equal(await page.locator('.split-panel').isVisible(),false);assert.ok(await page.locator('.tab').count()>0);
+    console.log('PASS: pane assignments, stacked layout and height restore across restart/workspace; reset closes panes; closed-buffer fallback and malformed-layout recovery retain tabs.');
+  }finally{if(app){app.process().kill();await app.close().catch(()=>{});}await fs.rm(root,{recursive:true,force:true});}
+})().catch(error=>{console.error(error);process.exitCode=1;});

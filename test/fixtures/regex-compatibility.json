@@ -1,0 +1,802 @@
+{
+  "schema": 1,
+  "reviewed": "2026-09-12",
+  "offsetUnits": "UTF-16 code units; half-open spans",
+  "openpadExpectationSource": "Hand-authored expected values, asserted against src/search-model.cjs and src/replacement-model.cjs; not generated from their output.",
+  "notepadObservation": {
+    "status": "NOT_RUN",
+    "version": null,
+    "results": null
+  },
+  "flags": "gmu always; i when caseSensitive=false; s when dotAll=true",
+  "cases": [
+    {
+      "id": "newline-R",
+      "input": "a\nb",
+      "options": {
+        "query": "\\R",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "error": "SyntaxError"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Line-ending sequence.",
+        "spans": [
+          [
+            1,
+            2
+          ]
+        ],
+        "after": "a#b"
+      }
+    },
+    {
+      "id": "keep-K",
+      "input": "foobar",
+      "options": {
+        "query": "foo\\Kbar",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "error": "SyntaxError"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Resets match start.",
+        "spans": [
+          [
+            3,
+            6
+          ]
+        ],
+        "after": "foo#"
+      }
+    },
+    {
+      "id": "inline-global",
+      "input": "CAT cat",
+      "options": {
+        "query": "(?i)cat",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "error": "SyntaxError"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Enables case-insensitive matching.",
+        "spans": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            7
+          ]
+        ],
+        "after": "# #"
+      }
+    },
+    {
+      "id": "inline-scoped",
+      "input": "CAT cat",
+      "options": {
+        "query": "(?i:cat)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            3
+          ],
+          [
+            4,
+            7
+          ]
+        ],
+        "after": "# #"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Scoped case modifier."
+      }
+    },
+    {
+      "id": "lookbehind-fixed",
+      "input": "foobar",
+      "options": {
+        "query": "(?<=foo)bar",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            3,
+            6
+          ]
+        ],
+        "after": "foo#"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Fixed-length lookbehind."
+      }
+    },
+    {
+      "id": "lookbehind-variable",
+      "input": "aaab",
+      "options": {
+        "query": "(?<=a+)b",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            3,
+            4
+          ]
+        ],
+        "after": "aaa#"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Variable-length lookbehind rejected.",
+        "error": "Documented fixed-length requirement"
+      }
+    },
+    {
+      "id": "posix-digits",
+      "input": "a12",
+      "options": {
+        "query": "[[:digit:]]+",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "error": "SyntaxError"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "POSIX digit class.",
+        "spans": [
+          [
+            1,
+            3
+          ]
+        ],
+        "after": "a#"
+      }
+    },
+    {
+      "id": "end-z",
+      "input": "a\n",
+      "options": {
+        "query": "a\\z",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "error": "SyntaxError"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Absolute buffer end.",
+        "spans": [],
+        "after": "a\n"
+      }
+    },
+    {
+      "id": "end-Z",
+      "input": "a\n",
+      "options": {
+        "query": "a\\Z",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "error": "SyntaxError"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "End before trailing newlines.",
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "#\n"
+      }
+    },
+    {
+      "id": "property-boost",
+      "input": "a12",
+      "options": {
+        "query": "\\p{digit}+",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [[1, 3]],
+        "after": "a#"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Named Boost character property.",
+        "spans": [
+          [
+            1,
+            3
+          ]
+        ],
+        "after": "a#"
+      }
+    },
+    {
+      "id": "property-js",
+      "input": "é漢 2",
+      "options": {
+        "query": "\\p{L}+",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            2
+          ]
+        ],
+        "after": "# 2"
+      },
+      "boost": {
+        "status": "UNVERIFIED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Property names differ; comparator required.",
+        "spans": null
+      }
+    },
+    {
+      "id": "unicode-scalar-dot",
+      "input": "😀x",
+      "options": {
+        "query": ".",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "after": "##"
+      },
+      "boost": {
+        "status": "UNVERIFIED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Unicode offset comparison requires runtime observation.",
+        "spans": null
+      }
+    },
+    {
+      "id": "vertical-v",
+      "input": "\n\u000b\r",
+      "options": {
+        "query": "\\v",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            1,
+            2
+          ]
+        ],
+        "after": "\n#\r"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Boost vertical-space set.",
+        "spans": [
+          [
+            0,
+            1
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        "after": "###"
+      },
+      "diskExpected": {
+        "spans": [
+          [
+            1,
+            2
+          ]
+        ],
+        "after": "\n#\n"
+      }
+    },
+    {
+      "id": "lf",
+      "input": "a\nb",
+      "options": {
+        "query": "\\n",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            1,
+            2
+          ]
+        ],
+        "after": "a#b"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Explicit LF."
+      }
+    },
+    {
+      "id": "cr",
+      "input": "a\rb",
+      "options": {
+        "query": "\\r",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            1,
+            2
+          ]
+        ],
+        "after": "a#b"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Explicit CR."
+      },
+      "diskExpected": {
+        "spans": [],
+        "after": "a\nb"
+      }
+    },
+    {
+      "id": "crlf",
+      "input": "a\r\nb",
+      "options": {
+        "query": "\\r\\n",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            1,
+            3
+          ]
+        ],
+        "after": "a#b"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Explicit CRLF."
+      },
+      "diskExpected": {
+        "spans": [],
+        "after": "a\nb"
+      }
+    },
+    {
+      "id": "multiline-anchors",
+      "input": "a\nb",
+      "options": {
+        "query": "^a$",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "#\nb"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Line anchors."
+      }
+    },
+    {
+      "id": "dot-no-newline",
+      "input": "a\nb",
+      "options": {
+        "query": "a.b",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [],
+        "after": "a\nb"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Dot excludes newline when disabled."
+      }
+    },
+    {
+      "id": "dot-all",
+      "input": "a\nb",
+      "options": {
+        "query": "a.b",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#",
+        "dotAll": true
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            3
+          ]
+        ],
+        "after": "#"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Dot includes newline when enabled."
+      }
+    },
+    {
+      "id": "zero-length",
+      "input": "aa",
+      "options": {
+        "query": "(?=a)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "#"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "after": "#a#a"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://www.boost.org/doc/libs/1_85_0/libs/regex/doc/html/boost_regex/syntax/perl_syntax.html",
+        "expectation": "Zero-width lookahead; global iteration comparator pending."
+      }
+    },
+    {
+      "id": "numbered-captures",
+      "input": "ab",
+      "options": {
+        "query": "(a)(b)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "$2-$1"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            2
+          ]
+        ],
+        "after": "b-a"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Numbered replacement groups."
+      }
+    },
+    {
+      "id": "replacement-backslash",
+      "input": "a",
+      "options": {
+        "query": "(a)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "\\1"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "\\1"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Backslash numbered replacement group.",
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "a"
+      }
+    },
+    {
+      "id": "replacement-zero",
+      "input": "a",
+      "options": {
+        "query": "a",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "$0"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "$0"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Whole-match substitution.",
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "a"
+      }
+    },
+    {
+      "id": "named-js",
+      "input": "a",
+      "options": {
+        "query": "(?<word>a)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "$<word>!"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "a!"
+      },
+      "boost": {
+        "status": "UNVERIFIED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Boost uses $+{name}."
+      }
+    },
+    {
+      "id": "named-boost",
+      "input": "a",
+      "options": {
+        "query": "(?<word>a)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "$+{word}!"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "$+{word}!"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Named replacement group.",
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "a!"
+      }
+    },
+    {
+      "id": "replacement-case",
+      "input": "a",
+      "options": {
+        "query": "(a)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "\\U$1\\E"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "\\Ua\\E"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Uppercase replacement mode.",
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "A"
+      }
+    },
+    {
+      "id": "replacement-newline",
+      "input": "a",
+      "options": {
+        "query": "a",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "\\n"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "\\n"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Escaped newline in replacement.",
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "\n"
+      }
+    },
+    {
+      "id": "dollar-tokens",
+      "input": "a",
+      "options": {
+        "query": "(a)",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "$$:$&:$12"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "$:a:a2"
+      },
+      "boost": {
+        "status": "UNVERIFIED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Literal dollar and whole match; numeric suffix comparator pending."
+      }
+    },
+    {
+      "id": "literal-parentheses",
+      "input": "a",
+      "options": {
+        "query": "a",
+        "regex": true,
+        "caseSensitive": true,
+        "replacement": "($&)"
+      },
+      "expected": {
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "(a)"
+      },
+      "boost": {
+        "status": "DOCUMENTED_NOT_EXECUTED",
+        "source": "https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/searching.md",
+        "expectation": "Replacement parentheses group without output.",
+        "spans": [
+          [
+            0,
+            1
+          ]
+        ],
+        "after": "a"
+      }
+    }
+  ]
+}

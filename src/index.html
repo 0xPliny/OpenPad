@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'">
+  <title>OpenPad</title>
+  <link rel="stylesheet" href="../dist/renderer.css">
+</head>
+<body>
+  <header><div class="brand"><span class="logo">O<span>+</span></span><strong>OpenPad</strong><span class="badge">PREVIEW</span></div><div class="actions"><button data-command="palette">Commands <kbd>Ctrl Shift P</kbd></button><button data-command="settings">Settings</button><button data-command="new">＋ New <kbd>Ctrl N</kbd></button><button data-command="open">Open <kbd>Ctrl O</kbd></button><button class="primary" data-command="save">Save <kbd>Ctrl S</kbd></button></div></header>
+  <div class="workspace"><aside><div class="section-title">OPEN DOCUMENTS <button data-command="new" aria-label="New document">＋</button></div><div id="documents"></div><div class="sidebar-bottom"><div class="accent">Context, in view.</div><p>Watch and curate the files<br>your agents work with.</p><span>Open source · Local files</span></div></aside><main><nav id="tabs" aria-label="Document tabs"></nav><div class="editor-toolbar"><span id="filepath">Untitled</span><div><button data-command="find">Find / Replace</button><button id="wrap" data-command="wrap" aria-pressed="false">Wrap: off</button><select id="language" aria-label="Language"><option value="">Plain text</option></select></div></div><div id="editor"></div></main></div>
+  <footer><span id="status">Ready</span><div><span id="position">Ln 1, Col 1</span><span id="encoding">UTF-8 · LF</span><span id="count">0 characters</span></div></footer>
+  <dialog id="dialog"><div class="dialog-heading"><h2 id="dialog-title"></h2><button id="dialog-close" aria-label="Close dialog">×</button></div><div id="dialog-body"></div></dialog>
+  <script src="../dist/renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "name": "openpad-editor",
+  "version": "0.3.0",
+  "description": "A local context workbench for Markdown maintained by people and AI agents",
+  "license": "MIT",
+  "private": true,
+  "main": "src/main.cjs",
+  "scripts": {
+    "build": "esbuild src/renderer.js --bundle --outfile=dist/renderer.js --loader:.css=css",
+    "start": "npm run build && electron .",
+    "test": "node --test test/*.test.cjs",
+    "test:ui": "npm run build && node test/ui.cjs && node test/features.cjs && node test/regressions.cjs && node test/open-external.cjs && node test/editing-ui.cjs && node test/replacement-ui.cjs && node test/file-operations-ui.cjs && node test/cli-ui.cjs && node test/transform-ui.cjs && node test/path-conflict-ui.cjs && node test/language-ui.cjs && node test/custom-language-ui.cjs && node test/search-ui.cjs && node test/external-commands-ui.cjs && node test/marks-ui.cjs && node test/visibility-ui.cjs && node test/encodings-ui.cjs && node test/utilities-ui.cjs && node test/editor-commands-ui.cjs && node test/folder-tree-ui.cjs && node test/change-history-ui.cjs && node test/groups-ui.cjs && node test/accessibility-ui.cjs && node test/recovery-shape-ui.cjs && node test/command-queue-ui.cjs && node test/pane-layout-ui.cjs && node test/pane-commands-ui.cjs && node test/independent-panes-ui.cjs && node test/context-ui.cjs && node test/context-corpus-ui.cjs && node test/context-review-ui.cjs && node test/context-lint-ui.cjs && node test/mcp-ui.cjs && node test/context-templates-ui.cjs",
+    "package": "npm run build && node package-app.mjs"
+  },
+  "dependencies": {
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.11.0",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/language-data": "^6.5.2",
+    "@codemirror/merge": "^6.12.2",
+    "@codemirror/search": "^6.7.2",
+    "@codemirror/state": "^6.7.4",
+    "@codemirror/theme-one-dark": "^6.1.3",
+    "@codemirror/view": "^6.43.11",
+    "@lezer/markdown": "1.7.2",
+    "@modelcontextprotocol/node": "2.0.0",
+    "@modelcontextprotocol/server": "2.0.0",
+    "ajv": "8.20.0",
+    "codemirror": "^6.0.2",
+    "dompurify": "^3.4.15",
+    "gpt-tokenizer": "4.0.0",
+    "iconv-lite": "^0.7.3",
+    "marked": "^18.0.12"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.0.0",
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "electron": "^44.3.0",
+    "electron-builder": "26.15.3",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.63.0"
+  }
+}
