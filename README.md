@@ -5,18 +5,6 @@
 Watch files change, inspect observed diffs, measure context costs, and curate project notes in a desktop text editor.
 
 **Early preview · MIT licensed · Windows verified**
-
-## Download
-
-### [⬇ Download OpenPad for Windows (.exe)](https://github.com/0xPliny/OpenPad/releases/download/v0.3.0/OpenPad-0.3.0-win32-x64-setup.exe)
-
-**Windows 10/11, 64-bit · Free · No Node.js or developer tools required**
-
-Download the installer, open it, choose an installation folder, and launch OpenPad from the Start menu. The installer does not launch the app automatically. Updates are installed manually.
-
-Prefer no installation? [Download the portable ZIP](https://github.com/0xPliny/OpenPad/releases/download/v0.3.0/OpenPad-0.3.0-win32-x64.zip), extract it, and open `OpenPad.exe`. [Release notes and SHA-256 checksums](https://github.com/0xPliny/OpenPad/releases/tag/v0.3.0) are available with every published build.
-
-This is an **unsigned preview**: Windows may display an unknown-publisher or SmartScreen warning. macOS and Linux downloads are not available yet.
 ## Features
 
 | Workflow | Available today |
@@ -62,7 +50,7 @@ npm run test:ui
 
 The source preview passed **210 model tests and 34 isolated Electron desktop scripts locally on Windows**. Some native dialogs are stubbed. These results do not certify physical printing, native Recycle Bin behavior, accessibility, or power-loss durability. There is no hosted CI guarantee.
 
-For local Windows packages, install PowerShell 7 (`pwsh.exe`), commit your changes, and run `npm run package` from a clean checkout. The script creates a unique directory under `release/builds/` with an NSIS installer, portable ZIP, checksums, and build metadata. It does not upload artifacts. The current script intentionally requires unsigned output; signing needs a separately reviewed packaging change. The downloadable preview is unsigned. Automatic updates and package-manager distribution are not available yet. Bit-for-bit build reproducibility is not certified.
+For local Windows packages, install PowerShell 7 (`pwsh.exe`), commit your changes, and run `npm run package` from a clean checkout. The script creates a unique directory under `release/builds/` with an NSIS installer, portable ZIP, checksums, and build metadata. It does not upload artifacts. The current script intentionally requires unsigned output; signing needs a separately reviewed packaging change. Automatic updates and package-manager distribution are not available yet. Bit-for-bit build reproducibility is not certified.
 
 For frozen-artifact desktop checks, set `OPENPAD_EXECUTABLE` and invoke each individual `node test/<script>.cjs` command in `package.json`. The `test:ui` command rebuilds source and should not be used as evidence for an immutable package.
 
