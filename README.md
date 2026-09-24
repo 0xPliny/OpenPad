@@ -4,7 +4,7 @@
 
 Watch files change, inspect observed diffs, measure context costs, and curate project notes in a desktop text editor.
 
-**Early preview · MIT licensed · Windows verified**
+**Early preview · AGPL-3.0 licensed · Windows verified**
 ## Features
 
 | Workflow | Available today |
@@ -73,4 +73,4 @@ Keep changes focused and preserve file bytes, unsaved edits, undo boundaries, ca
 
 ## License
 
-[MIT](LICENSE). Third-party dependencies retain their own licenses. The package's `private: true` setting prevents accidental npm publication; it does not restrict use or contribution under the MIT license.
+[GNU AGPL v3.0](LICENSE). Third-party dependencies retain their own licenses. The package's `private: true` setting prevents accidental npm publication; it does not restrict use or contribution under the AGPL-3.0 license.

@@ -2,7 +2,7 @@
   "name": "openpad-editor",
   "version": "0.3.0",
   "description": "A local context workbench for Markdown maintained by people and AI agents",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "private": true,
   "main": "src/main.cjs",
   "scripts": {
